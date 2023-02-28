@@ -1,4 +1,3 @@
-import { env } from 'process';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 
@@ -24,13 +23,13 @@ import {
 } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: env.REACT_APP__FB_API_KEY,
-  authDomain: env.REACT_APP__FB_AUTH_DOMAIN,
-  projectId: env.REACT_APP__FB_PROJECT_ID,
-  storageBucket: env.REACT_APP__FB_STORAGE_BUCKET,
-  messagingSenderId: env.REACT_APP__FB_MESSAGING_SENDER_ID,
-  appId: env.REACT_APP__FB_APP_ID,
-  measurementId: env.REACT_APP__FB_MEASUREMENT_ID
+  apiKey: process.env.REACT_APP__FB_API_KEY,
+  authDomain: process.env.REACT_APP__FB_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP__FB_PROJECT_ID,
+  storageBucket: process.env.REACT_APP__FB_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP__FB_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP__FB_APP_ID,
+  measurementId: process.env.REACT_APP__FB_MEASUREMENT_ID
 }
 
 const app = initializeApp(firebaseConfig);

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { BrowserRouter, createBrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.scss';
 import { Home } from './views/Home';
 import reportWebVitals from './reportWebVitals';
@@ -17,8 +17,12 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <HeaderBar />
-    <RouterProvider router={router} />
+    <BrowserRouter router={router}>
+      <HeaderBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

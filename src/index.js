@@ -1,13 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import './index.scss';
+import { Home } from './views/Home';
 import reportWebVitals from './reportWebVitals';
+import { HeaderBar } from './components/header/HeaderBar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />
+  }
+]);
+
 root.render(
   <React.StrictMode>
-    <App />
+    <HeaderBar />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

@@ -1,7 +1,9 @@
+import { Container } from "react-bootstrap"
+
 export function Home() {
   return (
-    <div className="container">
+    <Container>
       <h1 className="text-center">Hello, World!</h1>
-    </div>
+    </Container>
   );
 }

@@ -19,7 +19,9 @@ import {
   getDocs,
   collection,
   where,
-  addDoc
+  addDoc,
+  setDoc,
+  doc
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -43,22 +45,17 @@ const googleProvider = new GoogleAuthProvider();
  * Logs in the user using Google
  */
 const loginWithGoogle = async () => {
-  try {
-    const res = await signInWithPopup(auth, googleProvider);
-    const user = res.user;
-    const q = query(collection(db, 'userProfiles'), where('uid', '==', user.uid));
-    const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
-      await addDoc(collection(db, 'userProfiles'), {
-        uid: user.uid,
-        name: user.displayName,
-        authProvider: "google",
-        email: user.email
-      });
-    }
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
+  const res = await signInWithPopup(auth, googleProvider);
+  const user = res.user;
+  const q = query(collection(db, 'userProfiles'), where('uid', '==', user.uid));
+  const docs = await getDocs(q);
+  if (docs.docs.length === 0) {
+    await addDoc(collection(db, 'userProfiles'), {
+      uid: user.uid,
+      name: user.displayName,
+      authProvider: "google",
+      email: user.email
+    });
   }
 };
 
@@ -68,12 +65,7 @@ const loginWithGoogle = async () => {
  * @param {string} password The password
  */
 const loginWithEmailAndPassword = async (email, password) => {
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
+  await signInWithEmailAndPassword(auth, email, password);
 };
 
 /**
@@ -84,23 +76,18 @@ const loginWithEmailAndPassword = async (email, password) => {
  * @param {string} password The value to be used as their password.
  */
 const registerWithEmailAndPassword = async (name, email, password) => {
-  try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
-    await updateProfile(user, {
-      displayName: name
-    });
-    await addDoc(collection(db, 'userProfiles'), {
-      uid: user.uid,
-      name: name,
-      authProvider: 'local',
-      email: email
-    });
-    await sendEmailVerification(user);
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
+  const res = await (await createUserWithEmailAndPassword(auth, email, password));
+  const user = res.user;
+  await updateProfile(user, {
+    displayName: name
+  });
+  await setDoc(doc(db, `userProfiles/${user.uid}`), {
+    uid: user.uid,
+    name: name,
+    authProvider: 'local',
+    email: email
+  });
+  await sendEmailVerification(user);
 };
 
 /**
@@ -108,12 +95,7 @@ const registerWithEmailAndPassword = async (name, email, password) => {
  * @param {string} email The email to send the password reset to.
  */
 const sendPasswordReset = async (email) => {
-  try {
-    await sendPasswordResetEmail(auth, email);
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
+  await sendPasswordResetEmail(auth, email);
 };
 
 
